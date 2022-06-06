@@ -1,0 +1,50 @@
+{% extends "../index.njk" %}
+
+{% block experiment_js %}
+    <script src="/uncompressed-src/mozilla-cookie-helper.js"></script>
+    <script src="/uncompressed-src/mozilla-traffic-cop.js"></script>
+    <script src="/experiment-page2.js"></script>
+{% endblock %}
+
+{% block page_header %}
+    <h2>Tacos!</h2>
+{% endblock %}
+
+{% block content %}
+    <div id="content" data-experiment-id="experiment-page-2">
+        <article>
+            <figure>
+                <span>🌮</span>
+                <figcaption class="little-text">
+                    Yes, tacos are the best.
+                    <em class="hidden" id="var-a">(a) Let's have them for breakfast!</em>
+                    <em class="hidden" id="var-b">(b) Let's have them for lunch!</em>
+                    <em class="hidden" id="var-c">(c) Let's have them for dinner!</em>
+                </figcaption>
+            </figure>
+            <p>
+                What are you gonna spend your money on, kids?
+                <br><br>
+                There’s a special on tacos down at the Taco Mat &mdash; hundred
+                tacos for $100 &mdash; I’m gonna get that.
+                <br><br>
+                I’m gonna contribute my money to the Corporation for Public
+                Broadcasting.
+                <br><br>
+                Tacos? Public broadcasting? I won’t have you kids throwing away
+                your money like that. You’re both coming downtown with me, and
+                you’re gonna put that money in the bank.
+                <br><br>
+                Boy, I sure could go for 100 tacos right about now.
+                <br><br>
+                No.
+            </p>
+        </article>
+    </div>
+
+    {% include "./_experiment-details.njk" %}
+{% endblock %}
+
+{% block page_js %}
+    <script src="/experiment-details.js"></script>
+{% endblock %}
