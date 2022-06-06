@@ -12,6 +12,7 @@ module.exports = function (config) {
             'src/mozilla-dnt-helper.js',
             'src/mozilla-traffic-cop.js',
             'tests/test-traffic-cop.js',
+
             {
                 pattern: 'node_modules/sinon/pkg/sinon.js',
                 watched: false,

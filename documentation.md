@@ -83,12 +83,12 @@ Variations are sorted in the order provided, and percentages are tallied to crea
 
 ```javascript
 var rex = new Mozilla.TrafficCop({
-  id: "experiment-new-headline",
-  variations: {
-    "v=a": 15,
-    "v=b": 0.25,
-    "v=c": 25.6,
-  },
+    id: 'experiment-new-headline',
+    variations: {
+        'v=a': 15,
+        'v=b': 0.25,
+        'v=c': 25.6
+    }
 });
 ```
 
@@ -105,19 +105,19 @@ If the random number generated was 12.6, the user would be redirected to `?v=a`.
 
 Each instance of a Traffic Cop requires at least two pieces of configuration:
 
-- A string ID that is unique to other currently running tests (to avoid confusion when reading cookies)
-- A variations object that lists all variations along with the associated percent chance of being chosen
+-   A string ID that is unique to other currently running tests (to avoid confusion when reading cookies)
+-   A variations object that lists all variations along with the associated percent chance of being chosen
 
 An implementation for a redirect experiment might look like:
 
 ```javascript
 var eddie = new Mozilla.TrafficCop({
-  id: "experiment-new-headline",
-  variations: {
-    "v=1": 12.2,
-    "v=2": 0.13,
-    "v=3": 11.45,
-  },
+    id: 'experiment-new-headline',
+    variations: {
+        'v=1': 12.2,
+        'v=2': 0.13,
+        'v=3': 11.45
+    }
 });
 
 eddie.init();
@@ -137,14 +137,14 @@ An implementation with `cookieExpires` set might look like the following:
 
 ```javascript
 var lou = new Mozilla.TrafficCop({
-  id: "experiment-homepage-spring-2017",
-  customCallback: someCallbackFunction,
-  cookieExpires: 0, // lasts until user closes the window/tab
-  variations: {
-    a: 25,
-    b: 25,
-    c: 25,
-  },
+    id: 'experiment-homepage-spring-2017',
+    customCallback: someCallbackFunction,
+    cookieExpires: 0, // lasts until user closes the window/tab
+    variations: {
+        a: 25,
+        b: 25,
+        c: 25
+    }
 });
 
 lou.init();
@@ -166,12 +166,12 @@ At Mozilla, we use Google Tag Manager, and send this cookie information via a `d
 
 ```javascript
 //
-var referrer = Mozilla.Cookies.getItem("mozilla-traffic-cop-original-referrer");
+var referrer = Mozilla.Cookies.getItem('mozilla-traffic-cop-original-referrer');
 // some code to send 'referrer' on to analytics goes here...
 //
 
 // now clear the cookie so we don't accidentally read it again
-Mozilla.Cookies.removeItem("mozilla-traffic-cop-original-referrer");
+Mozilla.Cookies.removeItem('mozilla-traffic-cop-original-referrer');
 ```
 
 ## Implementation
@@ -186,7 +186,7 @@ Traffic Cop requires three JavaScript files:
 
 1. To prevent search engines from indexing a variation URL, we recommend adding a `<link rel="canonical">` to the `<head>` of your experiment pages that points to the URL without any variation parameters. For example, all variations for `www.toohot.today/product` should have the following tag:
 
-   `<link rel="canonical" href="http://www.toohot.today/product">`
+    `<link rel="canonical" href="http://www.toohot.today/product">`
 
 2. Concatenate and minify experiment-specific files before sending to production. This will reduce your file size by about **70%**!
 3. Respect your visitors' privacy settings and check their _doNotTrack_<sup>[1](#trafficcop-footnote1)</sup> status before putting them in an experiment.
