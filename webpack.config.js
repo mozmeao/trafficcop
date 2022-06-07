@@ -29,8 +29,8 @@ module.exports = {
                     from: path.resolve(__dirname, 'src/package/package.json'),
                     transform: function (content) {
                         return JSON.stringify(
-                            JSON.parse(content, (k, v) =>
-                                k === 'version' ? version : v
+                            JSON.parse(content, (key, value) =>
+                                key === 'version' ? version : value
                             ),
                             null,
                             4
