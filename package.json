@@ -7,10 +7,10 @@
         "test": "./tests"
     },
     "scripts": {
-        "pretest": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/* demo/src/**/*.js tests/*.js",
+        "pretest": "npm run build",
         "test": "./node_modules/karma/bin/karma start tests/karma.conf.js",
         "prettier": "prettier --write .",
-        "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/*",
+        "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/* demo/src/**/*.js tests/*.js",
         "build": "webpack --config webpack.config.js"
     },
     "repository": {

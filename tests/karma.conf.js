@@ -10,7 +10,7 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             'src/mozilla-dnt-helper.js',
-            'src/mozilla-traffic-cop.js',
+            'dist/index.js',
             'tests/test-traffic-cop.js',
 
             {
