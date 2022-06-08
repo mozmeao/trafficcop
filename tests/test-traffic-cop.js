@@ -32,6 +32,7 @@ describe('mozilla-traffic-cop.js', function () {
 
         it('should default to an empty object if supplied config is not an object', function () {
             var config = 'purplemonkeydishwasher';
+
             var cop = new Mozilla.TrafficCop(config);
             expect(cop.config).toEqual({});
         });

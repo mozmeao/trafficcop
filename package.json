@@ -1,34 +1,40 @@
 {
-  "name": "trafficcop",
-  "version": "1.0.0",
-  "description": "A/B testing framework from the fine folks working on mozilla.org",
-  "directories": {
-    "test": "./tests"
-  },
-  "scripts": {
-      "pretest": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/* demo/src/**/*.js tests/*.js",
-      "test": "./node_modules/karma/bin/karma start tests/karma.conf.js",
-      "prettier": "prettier --write .",
-      "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/*",
-      "build": "webpack --config webpack.config.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mozmeao/trafficcop.git"
-},
-  "author": "MozMEAO",
-  "license": "MPL-2.0",
-  "devDependencies": {
-    "eslint": "^8.12.0",
-    "jasmine-core": "^4.0.1",
-    "karma": "^6.3.17",
-    "karma-coverage": "^2.2.0",
-    "karma-firefox-launcher": "^2.1.2",
-    "karma-jasmine": "^4.0.1",
-    "sinon": "^13.0.1"
-},
-"dependencies": {
-    "eslint-config-prettier": "^8.5.0",
-    "prettier": "^2.6.1"
-}
+    "name": "@mozmeao/trafficcop",
+    "version": "1.0.1",
+    "private": true,
+    "description": "A/B testing framework from the fine folks working on mozilla.org",
+    "homepage": "https://github.com/mozmeao/trafficcop",
+    "main": "dist/index.js",
+    "directories": {
+        "test": "./tests"
+    },
+    "scripts": {
+        "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/*.js demo/src/**/*.js tests/*.js",
+        "build": "webpack --mode production --config webpack.config.js",
+        "prettier": "prettier --write .",
+        "prepublishOnly": "npm run build",
+        "pretest": "npm run build",
+        "test": "./node_modules/karma/bin/karma start tests/karma.conf.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mozmeao/trafficcop.git"
+    },
+    "author": "Mozilla",
+    "license": "MPL-2.0",
+    "devDependencies": {
+        "copy-webpack-plugin": "^11.0.0",
+        "eslint": "^8.12.0",
+        "jasmine-core": "^4.0.1",
+        "karma": "^6.3.17",
+        "karma-coverage": "^2.2.0",
+        "karma-firefox-launcher": "^2.1.2",
+        "karma-jasmine": "^4.0.1",
+        "sinon": "^13.0.1",
+        "webpack": "^5.73.0",
+        "webpack-cli": "^4.9.2",
+        "clean-webpack-plugin": "^4.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "prettier": "^2.6.1"
+    }
 }

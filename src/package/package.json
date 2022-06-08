@@ -1,0 +1,20 @@
+{
+    "name": "@mozmeao/trafficcop",
+    "version": "1.0.0",
+    "description": "A/B testing framework from the fine folks working on mozilla.org",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "mozilla",
+        "ab testing",
+        "js"
+    ],
+    "author": "Mozilla",
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://github.com/mozilla/protocol/issues"
+    },
+    "homepage": "https://github.com/mozmeao/trafficcop",
+    "main": "index.js"
+}
