@@ -1,5 +1,5 @@
 {
-    "name": "trafficcop",
+    "name": "@mozmeao/trafficcop",
     "version": "1.0.0",
     "description": "A/B testing framework from the fine folks working on mozilla.org",
     "scripts": {
@@ -10,7 +10,7 @@
         "ab testing",
         "js"
     ],
-    "author": "mozmeao",
+    "author": "Mozilla",
     "license": "MPL-2.0",
     "bugs": {
         "url": "https://github.com/mozilla/protocol/issues"

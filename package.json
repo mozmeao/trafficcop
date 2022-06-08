@@ -1,5 +1,5 @@
 {
-    "name": "trafficcop",
+    "name": "@mozmeao/trafficcop",
     "version": "1.0.1",
     "private": true,
     "description": "A/B testing framework from the fine folks working on mozilla.org",
@@ -10,7 +10,7 @@
     },
     "scripts": {
         "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/*.js demo/src/**/*.js tests/*.js",
-        "build": "webpack --config webpack.config.js",
+        "build": "webpack --mode production --config webpack.config.js",
         "prettier": "prettier --write .",
         "prepublishOnly": "npm run build",
         "pretest": "npm run build",
@@ -20,7 +20,7 @@
         "type": "git",
         "url": "https://github.com/mozmeao/trafficcop.git"
     },
-    "author": "MozMEAO",
+    "author": "Mozilla",
     "license": "MPL-2.0",
     "devDependencies": {
         "copy-webpack-plugin": "^11.0.0",
