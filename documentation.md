@@ -26,7 +26,7 @@ function myCallback(variation) {
     // and then change button color based on variation chosen...
 }
 
-var lou = new Mozilla.TrafficCop({
+var lou = new TrafficCop({
   id: ‘experiment-button-color’,
   customCallback: myCallback,
   variations: {
@@ -54,7 +54,7 @@ Any query string parameters present when a user initially lands on a page will b
 
 ```javascript
 // example configuration for a redirect experiment
-var wiggum = new Mozilla.TrafficCop({
+var wiggum = new TrafficCop({
   id: ‘experiment-promo-fall-2017’,
   variations: {
     ‘v=1’: 0.15,
@@ -82,7 +82,7 @@ Check out the demo for a live example of this setup.
 Variations are sorted in the order provided, and percentages are tallied to create tiers. Take the following config:
 
 ```javascript
-var rex = new Mozilla.TrafficCop({
+var rex = new TrafficCop({
     id: 'experiment-new-headline',
     variations: {
         'v=a': 15,
@@ -111,7 +111,7 @@ Each instance of a Traffic Cop requires at least two pieces of configuration:
 An implementation for a redirect experiment might look like:
 
 ```javascript
-var eddie = new Mozilla.TrafficCop({
+var eddie = new TrafficCop({
     id: 'experiment-new-headline',
     variations: {
         'v=1': 12.2,
@@ -136,7 +136,7 @@ To specify how long the cookie associated with a visitor for an individual exper
 An implementation with `cookieExpires` set might look like the following:
 
 ```javascript
-var lou = new Mozilla.TrafficCop({
+var lou = new TrafficCop({
     id: 'experiment-homepage-spring-2017',
     customCallback: someCallbackFunction,
     cookieExpires: 0, // lasts until user closes the window/tab

@@ -27,7 +27,7 @@
             : document.addEventListener('DOMContentLoaded', callback);
     }
 
-    var wiggum = new Mozilla.TrafficCop({
+    var wiggum = new window.TrafficCop({
         id: 'experiment-page-2',
         customCallback: handleVariation,
         variations: variants

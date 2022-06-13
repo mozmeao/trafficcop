@@ -4,6 +4,16 @@
 
 (If you want to skip the spiel and get straight to business, check out the [docs](./documentation.md).)
 
+### How to install and use
+
+Install via npm: `npm install @mozmeao/trafficcop`
+
+Import the library at your applications entrypoint via require, import or by using a global variable in your script tag:
+
+-   `import TrafficCop from '@mozmeao/trafficcop';`
+-   `const TrafficCop= require('@mozmeao/trafficcop')`
+-   `const TrafficCop = window.TrafficCop;`
+
 ### What does it do?
 
 Traffic Cop is a small bit of JavaScript that decides if a visitor should participate in a variation of the current page. If so, a cookie is set and one of two things happens:
@@ -42,7 +52,7 @@ Implementing Traffic Cop requires at least two other JavaScript files: one to co
 
 ```javascript
 // example configuration for a redirect experiment
-var wiggum = new Mozilla.TrafficCop({
+var wiggum = new TrafficCop({
   id: ‘experiment-promo-fall-2017’,
   variations: {
     ‘v=1’: 10.5,
@@ -64,7 +74,7 @@ function myCallback(variation) {
     // and then change button color based on variation chosen...
 }
 
-var lou = new Mozilla.TrafficCop({
+var lou = new TrafficCop({
   id: ‘experiment-button-color’,
   customCallback: myCallback,
   variations: {
