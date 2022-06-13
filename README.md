@@ -92,6 +92,12 @@ In the above example, a visitor would have a 25% chance of being chosen for `a`,
 
 Check out [the docs](./documentation.md) for more complete information.
 
+## Further Doumentation
+
+-   [Building the NPM package](docs/#building-the-npm-package)
+-   [Running tests](docs/#running-tests)
+-   [Publishing to NPM](docs/#publishing-to-npm)
+
 ## License
 
 This Source Code Form is subject to the terms of the [Mozilla Public

@@ -13,7 +13,7 @@
     "author": "Mozilla",
     "license": "MPL-2.0",
     "bugs": {
-        "url": "https://github.com/mozilla/protocol/issues"
+        "url": "https://github.com/mozmeao/trafficcop/issues"
     },
     "homepage": "https://github.com/mozmeao/trafficcop",
     "main": "index.js"
