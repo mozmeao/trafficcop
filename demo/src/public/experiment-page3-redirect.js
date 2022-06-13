@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var lou = new Mozilla.TrafficCop({
+    var lou = new window.TrafficCop({
         id: 'experiment-page-3',
         storeReferrerCookie: false, // don't store original referrer on redirect
         variations: {

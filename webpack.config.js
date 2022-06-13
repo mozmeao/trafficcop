@@ -10,7 +10,7 @@ module.exports = {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
         library: {
-            name: 'trafficcop',
+            name: 'TrafficCop',
             type: 'umd'
         }
     },

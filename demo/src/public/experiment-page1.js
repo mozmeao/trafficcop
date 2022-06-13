@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var eddie = new Mozilla.TrafficCop({
+    var eddie = new window.TrafficCop({
         id: 'experiment-page-1',
         cookieExpires: 0, // session length cookie
         variations: {
