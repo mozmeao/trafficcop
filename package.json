@@ -1,6 +1,6 @@
 {
     "name": "@mozmeao/trafficcop",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "private": true,
     "description": "A/B testing framework from the fine folks working on mozilla.org",
     "homepage": "https://github.com/mozmeao/trafficcop",
@@ -14,7 +14,8 @@
         "prettier": "prettier --write .",
         "prepublishOnly": "npm run build",
         "pretest": "npm run build",
-        "test": "./node_modules/karma/bin/karma start tests/karma.conf.js"
+        "test": "./node_modules/karma/bin/karma start tests/karma.conf.js",
+        "readme": "doctoc --title \"### Contents\" --maxlevel 2 docs/README.md"
     },
     "repository": {
         "type": "git",
@@ -24,6 +25,7 @@
     "license": "MPL-2.0",
     "devDependencies": {
         "copy-webpack-plugin": "^11.0.0",
+        "doctoc": "^2.0.1",
         "eslint": "^8.12.0",
         "jasmine-core": "^4.0.1",
         "karma": "^6.3.17",
