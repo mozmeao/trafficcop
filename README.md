@@ -2,7 +2,7 @@
 
 ## Simple, lightweight, developer-focused front-end A/B testing
 
-(If you want to skip the spiel and get straight to business, check out the [docs](./documentation.md).)
+(If you want to skip the spiel and get straight to business, check out the [docs](https://github.com/mozmeao/trafficcop/blob/main/documentation.md).)
 
 ### How to install and use
 
@@ -13,6 +13,9 @@ Import the library at your applications entrypoint via require, import or by usi
 -   `import TrafficCop from '@mozmeao/trafficcop';`
 -   `const TrafficCop= require('@mozmeao/trafficcop')`
 -   `const TrafficCop = window.TrafficCop;`
+
+Note that Traffic Cop requires an additional Cookie Helper library to also be installed in order to work. Check out the
+[implementation docs](https://github.com/mozmeao/trafficcop/blob/main/documentation.md#implementation) for more information.
 
 ### What does it do?
 

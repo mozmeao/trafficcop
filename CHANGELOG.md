@@ -1,3 +1,7 @@
+# HEAD
+
+-  **docs:** Update docs import `@mozmeao/cookie-helper`.
+
 # 2.0.0
 
 ## Bug Fixes

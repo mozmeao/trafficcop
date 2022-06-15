@@ -178,9 +178,24 @@ Mozilla.Cookies.removeItem('mozilla-traffic-cop-original-referrer');
 
 Traffic Cop requires three JavaScript files:
 
-1. `mozilla-cookie-helper.js` (included in the `src` directory)
-2. `mozilla-traffic-cop.js`
+1. `@mozmeao/cookie-helper` (install via [NPM](https://www.npmjs.com/package/@mozmeao/cookie-helper))
+2. `@mozmeao/trafficcop` (install via [NPM](https://www.npmjs.com/package/@mozmeao/trafficcop))
 3. A custom `.js` file to configure and initialize an instance of Traffic Cop (and perhaps contain a callback function)
+
+Note that Traffic Cop expects a cookie helper library to be available via a specific global variable in order to work. You can instantiate the cookie helper like so:
+
+```javascript
+const CookieHelper = require('@mozmeao/cookie-helper');
+
+// create namespace
+if (typeof window.Mozilla === 'undefined') {
+    window.Mozilla = {};
+}
+
+window.Mozilla.Cookies = CookieHelper;
+```
+
+If you ensure the above code is included before Traffic Cop is run, then everything should work correctly.
 
 ### Considerations
 
