@@ -2,26 +2,50 @@ module.exports = {
     env: {
         node: true,
         browser: true,
-        es6: true,
-        jasmine: true
+        es2017: true
     },
     extends: ['eslint:recommended', 'prettier'],
     rules: {
-        'no-global-assign': 2,
-        'linebreak-style': [2, 'unix'],
-        quotes: [2, 'single'],
-        semi: [2, 'always'],
-        curly: [2, 'all'],
-        camelcase: [
-            2,
-            {
-                properties: 'always'
-            }
-        ],
-        eqeqeq: [2, 'smart'],
-        'one-var-declaration-per-line': [2, 'always'],
-        'new-cap': 2
+        // Use type-safe equality operators
+        // https://eslint.org/docs/rules/eqeqeq
+        eqeqeq: ['error', 'always'],
+
+        // Treat var statements as if they were block scoped
+        // https://eslint.org/docs/rules/block-scoped-var
+        'block-scoped-var': 'error',
+
+        // Disallow Use of alert, confirm, prompt
+        // https://eslint.org/docs/rules/no-alert
+        'no-alert': 'error',
+
+        // Disallow eval()
+        // https://eslint.org/docs/rules/no-eval
+        'no-eval': 'error',
+
+        // Disallow empty functions
+        // https://eslint.org/docs/rules/no-empty-function
+        'no-empty-function': 'error',
+
+        // Require radix parameter
+        // https://eslint.org/docs/rules/radix
+        radix: 'error',
+
+        // Disallow the use of `console`
+        // https://eslint.org/docs/rules/no-console
+        'no-console': 'error'
     },
+    overrides: [
+        {
+            // JS Karma test files.
+            files: ['tests/**/*.js'],
+            env: {
+                jasmine: true
+            },
+            parserOptions: {
+                sourceType: 'module'
+            }
+        }
+    ],
     globals: {
         Mozilla: true
     }
