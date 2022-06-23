@@ -1,6 +1,6 @@
 # HEAD
 
--  **docs:** Update docs import `@mozmeao/cookie-helper`.
+-   **docs:** Update docs import `@mozmeao/cookie-helper`.
 
 # 2.0.0
 
