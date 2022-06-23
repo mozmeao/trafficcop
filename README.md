@@ -95,7 +95,7 @@ In the above example, a visitor would have a 25% chance of being chosen for `a`,
 
 Check out [the docs](./documentation.md) for more complete information.
 
-## Further Doumentation
+## Further Documentation
 
 -   [Building the NPM package](docs/#building-the-npm-package)
 -   [Running tests](docs/#running-tests)
