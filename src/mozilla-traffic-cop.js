@@ -7,7 +7,7 @@
  *
  * Example usage:
  *
- * var cop = new TrafficCop({
+ * const cop = new TrafficCop({
  *     id: 'exp_firefox_new_all_link',
  *     cookieExpires: 48,
  *     variations: {
@@ -81,7 +81,7 @@ const TrafficCop = function (config) {
     this.chosenVariation = null;
 
     // calculate and store total percentage of variations
-    for (var v in this.variations) {
+    for (const v in this.variations) {
         if (
             Object.prototype.hasOwnProperty.call(this.variations, v) &&
             typeof this.variations[v] === 'number'
@@ -160,7 +160,7 @@ TrafficCop.prototype.initiateCustomCallbackRoutine = function () {
  * redirected. May result in no redirect.
  */
 TrafficCop.prototype.initiateRedirectRoutine = function () {
-    var redirectUrl;
+    let redirectUrl;
 
     // make sure current page doesn't match a variation
     // (avoid infinite redirects)
@@ -241,7 +241,7 @@ TrafficCop.prototype.verifyConfig = function () {
  */
 TrafficCop.generateCookieExpiresDate = function (cookieExpires, date) {
     // default to null, meaning a session-length cookie
-    var d = null;
+    let d = null;
 
     if (cookieExpires > 0) {
         d = date || new Date();
@@ -255,7 +255,7 @@ TrafficCop.generateCookieExpiresDate = function (cookieExpires, date) {
  * Checks to see if user is currently viewing a variation.
  */
 TrafficCop.isRedirectVariation = function (variations, queryString) {
-    var isVariation = false;
+    let isVariation = false;
     queryString = queryString || window.location.search;
 
     // check queryString for presence of variation
@@ -276,9 +276,9 @@ TrafficCop.isRedirectVariation = function (variations, queryString) {
  * Returns the variation chosen for the current user/experiment.
  */
 TrafficCop.chooseVariation = function (id, variations, totalPercentage) {
-    var rando;
-    var runningTotal;
-    var choice = TrafficCop.noVariationCookieValue;
+    let rando;
+    let runningTotal;
+    let choice = TrafficCop.noVariationCookieValue;
 
     // check to see if user has a cookie from a previously visited variation
     // also make sure variation in cookie is still valid (you never know)
@@ -300,7 +300,7 @@ TrafficCop.chooseVariation = function (id, variations, totalPercentage) {
             runningTotal = 0;
 
             // loop through all variations
-            for (var v in variations) {
+            for (const v in variations) {
                 // check if random number falls within current variation range
                 if (rando <= variations[v] + runningTotal) {
                     // if so, we have found our variation
@@ -322,9 +322,9 @@ TrafficCop.chooseVariation = function (id, variations, totalPercentage) {
  * which (if any) variation should be matched.
  */
 TrafficCop.generateRedirectUrl = function (chosenVariation, url) {
-    var hash;
-    var redirect;
-    var urlParts;
+    let hash;
+    let redirect;
+    let urlParts;
 
     // url parameter only supplied for unit tests
     url = url || window.location.href;
