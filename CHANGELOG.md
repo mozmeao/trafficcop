@@ -1,5 +1,8 @@
 # HEAD
 
+## Bug Fixes
+
+-   **demo:** Update demo pages to use `@mozmeao/cookie-helper` v1.1.0 (#10).
 -   **docs:** Update docs import `@mozmeao/cookie-helper`.
 
 # 2.0.0

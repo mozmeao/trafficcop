@@ -10,7 +10,7 @@
     "author": "Mozilla",
     "license": "MPL-2.0",
     "dependencies": {
-        "@mozmeao/cookie-helper": "^1.0.1",
+        "@mozmeao/cookie-helper": "^1.1.0",
         "express": "^4.14.0",
         "nunjucks": "^3.0.0",
         "path": "^0.12.7",
