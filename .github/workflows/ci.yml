@@ -5,7 +5,7 @@ on:
     - main
 jobs:
     test:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04 # Using pinned version instead of -latest until https://github.com/actions/runner-images/issues/6704 is resolved.
         name: 'Test'
         steps:
             - name: 'Ensure a recent Firefox and the xvfb framebuffer are installed'
@@ -15,7 +15,7 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16'
+                  node-version: '18'
             - name: 'Install NPM deps'
               run: npm install
             - name: 'Run JS tests in headless mode, thanks to xvfb'
