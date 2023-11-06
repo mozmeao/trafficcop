@@ -1,6 +1,8 @@
-# 2.0.1
+# HEAD
 
-## Bug Fixes
+- **js:** Migrate JS tests to jasmine-browser-runner (#40).
+
+# 2.0.1
 
 -   **js:** Update ESLint config to enforce common rules (#13).
 -   **js:** Transpile code to ES5 before publishing (#12).
@@ -8,8 +10,6 @@
 -   **docs:** Update docs import `@mozmeao/cookie-helper`.
 
 # 2.0.0
-
-## Bug Fixes
 
 -   **js:** Remove `Mozilla` JS namespace from library (#4).
 -   **docs:** Update docs to have info about publishing to NPM

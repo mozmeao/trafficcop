@@ -2,5 +2,5 @@
 node_modules
 demo/node_modules
 demo/libs
-tests/unit/coverage
+tests/dist
 /dist
