@@ -9,7 +9,8 @@
         "test": "./tests"
     },
     "scripts": {
-        "prebuild": "npm run prettier && ./node_modules/eslint/bin/eslint.js src/*.js demo/src/**/*.js tests/*.js",
+        "lint": "npm run prettier && npx eslint .",
+        "prebuild": "npm run lint",
         "build": "webpack --mode production --config webpack.config.js",
         "prettier": "prettier --write .",
         "prepublishOnly": "npm run build",
@@ -33,6 +34,7 @@
         "doctoc": "^2.2.1",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
+        "globals": "^13.23.0",
         "jasmine-browser-runner": "^2.3.0",
         "jasmine-core": "^5.1.1",
         "prettier": "^3.1.1",
