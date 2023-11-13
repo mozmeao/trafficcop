@@ -36,7 +36,7 @@ module.exports = {
     },
     overrides: [
         {
-            // JS Karma test files.
+            // Jasmine test files.
             files: ['tests/**/*.js'],
             env: {
                 jasmine: true
