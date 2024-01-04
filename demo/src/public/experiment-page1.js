@@ -2,8 +2,6 @@
     'use strict';
 
     var eddie = new window.TrafficCop({
-        id: 'experiment-page-1',
-        cookieExpires: 0, // session length cookie
         variations: {
             'v=1': 40.5,
             'v=2': 20.3,

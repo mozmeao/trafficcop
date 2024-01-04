@@ -10,7 +10,7 @@
     function handleVariation(variation) {
         // wait until DOM is ready to be manipulated...
         domReady(function () {
-            // make sure variation is one we are expecting (and not noVariationCookieValue)
+            // make sure variation is one we are expecting (and not noVariationValue)
             if (Object.prototype.hasOwnProperty.call(variants, variation)) {
                 var target = document.getElementById('var-' + variation);
                 target.classList.remove('hidden');
@@ -28,7 +28,6 @@
     }
 
     var wiggum = new window.TrafficCop({
-        id: 'experiment-page-2',
         customCallback: handleVariation,
         variations: variants
     });

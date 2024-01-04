@@ -13,10 +13,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     entry: {
         test: glob.sync('tests/test-traffic-cop.js'),
-        'test-deps': [
-            'src/mozilla-dnt-helper.js',
-            'node_modules/sinon/pkg/sinon.js'
-        ]
+        'test-deps': ['node_modules/sinon/pkg/sinon.js']
     },
     output: {
         filename: '[name].js',
