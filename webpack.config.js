@@ -1,8 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const package = require('./package.json');
-const version = package.version;
+const version = require('./package.json').version;
 
 module.exports = {
     entry: './src/mozilla-traffic-cop.js',
