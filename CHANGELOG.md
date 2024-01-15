@@ -1,5 +1,6 @@
 # HEAD
 
+-   **js:** Remove use of cookies (#56).
 -   **js:** Migrate ESLint to use new flat config (#42).
 -   **js:** Migrate JS tests to jasmine-browser-runner (#40).
 

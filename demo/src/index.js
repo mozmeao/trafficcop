@@ -16,8 +16,6 @@ app.use(
     '/uncompressed-src',
     express.static(path.join(__dirname, '/../../src/'))
 );
-app.use('/libs', express.static(path.join(__dirname, '/../libs/')));
-app.use(express.static(path.join(__dirname, '../libs')));
 
 nunjucks.configure('src/views', {
     autoescape: true,

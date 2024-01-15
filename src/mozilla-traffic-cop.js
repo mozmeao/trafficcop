@@ -3,13 +3,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /**
- * Traffic Cop traffic redirector for A/B/x testing
+ * Traffic Cop traffic redirect helper for A/B/x testing
  *
  * Example usage:
  *
  * const cop = new TrafficCop({
- *     id: 'exp_firefox_new_all_link',
- *     cookieExpires: 48,
  *     variations: {
  *         'v=1': 25,
  *         'v=2': 25,
@@ -21,18 +19,10 @@
  *
  *
  * @param Object config: Object literal containing the following:
- *      [String] id (required): Unique-ish string for cookie identification.
- *          Only needs to be unique to other currently running tests.
- *      [Number] cookieExpires (optional): Number of hours browser should
- *          remember the variation chosen for the user. Defaults to 24 (hours).
- *          A value of 0 will result in a session-length cookie.
- *      [Boolean] storeReferrerCookie (optional): Flag to specify whether or not
- *          original HTTP referrer should be placed in a cookie for later use.
- *          Defaults to true.
  *      [Function] customCallback (optional): Arbitrary function to run when
  *          a variation (or lack thereof) is chosen. This function will be
  *          passed the variation value (if chosen), or the value of
- *          noVariationCookieValue if no variation was chosen. *Specifying this
+ *          noVariationValue if no variation was chosen. *Specifying this
  *          function means no redirect will occur.*
  *      Object variations (required): Object holding key/value pairs of
  *          variations and their respective traffic percentages. Example:
@@ -49,9 +39,6 @@ const TrafficCop = function (config) {
     // make sure config is an object
     this.config = typeof config === 'object' ? config : {};
 
-    // store id
-    this.id = this.config.id;
-
     // store variations
     this.variations = this.config.variations;
 
@@ -63,20 +50,6 @@ const TrafficCop = function (config) {
         typeof this.config.customCallback === 'function'
             ? this.config.customCallback
             : null;
-
-    // store experiment cookie expiry (defaults to 24 hours)
-    this.cookieExpires =
-        this.config.cookieExpires !== undefined
-            ? this.config.cookieExpires
-            : TrafficCop.defaultCookieExpires;
-
-    this.cookieExpiresDate = TrafficCop.generateCookieExpiresDate(
-        this.cookieExpires
-    );
-
-    // store pref to store referrer cookie on redirect (default to true)
-    this.storeReferrerCookie =
-        this.config.storeReferrerCookie === false ? false : true;
 
     this.chosenVariation = null;
 
@@ -97,30 +70,17 @@ const TrafficCop = function (config) {
     return this;
 };
 
-TrafficCop.defaultCookieExpires = 24;
-TrafficCop.noVariationCookieValue = 'novariation';
-TrafficCop.referrerCookieName = 'mozilla-traffic-cop-original-referrer';
+TrafficCop.noVariationValue = 'no-variation';
 
 /*
  * Initialize the traffic cop. Validates variations, ensures user is not
  * currently viewing a variation, and (possibly) redirects to a variation
  */
 TrafficCop.prototype.init = function () {
-    // respect the DNT
-    if (typeof Mozilla.dntEnabled === 'function' && Mozilla.dntEnabled()) {
-        return;
-    }
-
-    // If cookie helper is not defined or cookies are not enabled, do nothing.
-    if (typeof Mozilla.Cookies === 'undefined' || !Mozilla.Cookies.enabled()) {
-        return;
-    }
-
     // make sure config is valid (id & variations present)
     if (this.verifyConfig()) {
         // determine which (if any) variation to choose for this user/experiment
         this.chosenVariation = TrafficCop.chooseVariation(
-            this.id,
             this.variations,
             this.totalPercentage
         );
@@ -140,17 +100,6 @@ TrafficCop.prototype.init = function () {
  * developer.
  */
 TrafficCop.prototype.initiateCustomCallbackRoutine = function () {
-    // set a cookie to remember the chosen variation
-    Mozilla.Cookies.setItem(
-        this.id,
-        this.chosenVariation || TrafficCop.noVariationCookieValue,
-        this.cookieExpiresDate,
-        undefined,
-        undefined,
-        false,
-        'lax'
-    );
-
     // invoke the developer supplied callback, passing in the chosen variation
     this.customCallback(this.chosenVariation);
 };
@@ -168,47 +117,9 @@ TrafficCop.prototype.initiateRedirectRoutine = function () {
         // roll the dice to see if user should be send to a variation
         redirectUrl = TrafficCop.generateRedirectUrl(this.chosenVariation);
 
-        // if we get a variation, send the user and store a cookie
+        // if we get a variation, perform the redirect
         if (redirectUrl) {
-            // Store the original referrer for use after redirect takes place so analytics can
-            // keep track of where visitors are coming from.
-
-            // Traffic Cop does nothing with this referrer - it's up to the implementing site to
-            // send it on to an analytics platform (or whatever).
-            if (this.storeReferrerCookie) {
-                TrafficCop.setReferrerCookie(this.cookieExpiresDate);
-                // a previous experiment may have set the cookie, so explicitly remove it here
-            } else {
-                TrafficCop.clearReferrerCookie();
-            }
-
-            // set a cookie containing the chosen variation
-            Mozilla.Cookies.setItem(
-                this.id,
-                this.chosenVariation,
-                this.cookieExpiresDate,
-                undefined,
-                undefined,
-                false,
-                'lax'
-            );
-
             TrafficCop.performRedirect(redirectUrl);
-        } else {
-            // if no variation, set a cookie so user isn't re-entered into
-            // the dice roll on next page load
-            Mozilla.Cookies.setItem(
-                this.id,
-                TrafficCop.noVariationCookieValue,
-                this.cookieExpiresDate,
-                undefined,
-                undefined,
-                false,
-                'lax'
-            );
-
-            // same as above - referrer cookie could be set from previous experiment, so best to clear
-            TrafficCop.clearReferrerCookie();
         }
     }
 };
@@ -218,37 +129,12 @@ TrafficCop.prototype.initiateRedirectRoutine = function () {
  * of users.
  */
 TrafficCop.prototype.verifyConfig = function () {
-    if (!this.id || typeof this.id !== 'string') {
-        return false;
-    }
-
     // make sure totalPercent is between 0 and 100
     if (this.totalPercentage === 0 || this.totalPercentage > 100) {
         return false;
     }
 
-    // make sure cookieExpires is null or a number
-    if (typeof this.cookieExpires !== 'number') {
-        return false;
-    }
-
     return true;
-};
-
-/*
- * Generates an expiration date for the visitor's cookie.
- * 'date' param used only for unit testing.
- */
-TrafficCop.generateCookieExpiresDate = function (cookieExpires, date) {
-    // default to null, meaning a session-length cookie
-    let d = null;
-
-    if (cookieExpires > 0) {
-        d = date || new Date();
-        d.setHours(d.getHours() + cookieExpires);
-    }
-
-    return d;
 };
 
 /*
@@ -275,42 +161,30 @@ TrafficCop.isRedirectVariation = function (variations, queryString) {
 /*
  * Returns the variation chosen for the current user/experiment.
  */
-TrafficCop.chooseVariation = function (id, variations, totalPercentage) {
-    let rando;
+TrafficCop.chooseVariation = function (variations, totalPercentage) {
+    let random;
     let runningTotal;
-    let choice = TrafficCop.noVariationCookieValue;
+    let choice = TrafficCop.noVariationValue;
 
-    // check to see if user has a cookie from a previously visited variation
-    // also make sure variation in cookie is still valid (you never know)
-    if (
-        Mozilla.Cookies.hasItem(id) &&
-        (variations[Mozilla.Cookies.getItem(id)] ||
-            Mozilla.Cookies.getItem(id) === TrafficCop.noVariationCookieValue)
-    ) {
-        choice = Mozilla.Cookies.getItem(id);
-        // no cookie exists, or cookie has invalid variation, so choose a shiny new
-        // variation
-    } else {
-        // conjure a random float between 1 and 100 (inclusive)
-        rando = Math.floor(Math.random() * 10000) + 1;
-        rando = rando / 100;
+    // conjure a random float between 1 and 100 (inclusive)
+    random = Math.floor(Math.random() * 10000) + 1;
+    random = random / 100;
 
-        // make sure random number falls in the distribution range
-        if (rando <= totalPercentage) {
-            runningTotal = 0;
+    // make sure random number falls in the distribution range
+    if (random <= totalPercentage) {
+        runningTotal = 0;
 
-            // loop through all variations
-            for (const v in variations) {
-                // check if random number falls within current variation range
-                if (rando <= variations[v] + runningTotal) {
-                    // if so, we have found our variation
-                    choice = v;
-                    break;
-                }
-
-                // tally variation percentages for the next loop iteration
-                runningTotal += variations[v];
+        // loop through all variations
+        for (const v in variations) {
+            // check if random number falls within current variation range
+            if (random <= variations[v] + runningTotal) {
+                // if so, we have found our variation
+                choice = v;
+                break;
             }
+
+            // tally variation percentages for the next loop iteration
+            runningTotal += variations[v];
         }
     }
 
@@ -337,7 +211,7 @@ TrafficCop.generateRedirectUrl = function (chosenVariation, url) {
     }
 
     // if a variation was chosen, construct a new URL
-    if (chosenVariation !== TrafficCop.noVariationCookieValue) {
+    if (chosenVariation !== TrafficCop.noVariationValue) {
         redirect = url + (url.indexOf('?') > -1 ? '&' : '?') + chosenVariation;
 
         // re-insert hash (if originally present)
@@ -351,33 +225,6 @@ TrafficCop.generateRedirectUrl = function (chosenVariation, url) {
 
 TrafficCop.performRedirect = function (redirectURL) {
     window.location.href = redirectURL;
-};
-
-TrafficCop.setReferrerCookie = function (expirationDate, referrer) {
-    // in order of precedence, referrer should be:
-    // 1. custom value passed in via unit test
-    // 2. value of document.referrer
-    // 3. 'direct' string literal
-    referrer = referrer || TrafficCop.getDocumentReferrer() || 'direct';
-
-    Mozilla.Cookies.setItem(
-        TrafficCop.referrerCookieName,
-        referrer,
-        expirationDate,
-        undefined,
-        undefined,
-        false,
-        'lax'
-    );
-};
-
-TrafficCop.clearReferrerCookie = function () {
-    Mozilla.Cookies.removeItem(TrafficCop.referrerCookieName);
-};
-
-// wrapper around document.referrer for better unit testing
-TrafficCop.getDocumentReferrer = function () {
-    return document.referrer;
 };
 
 module.exports = TrafficCop;

@@ -14,7 +14,6 @@
     }
 
     var wiggum = new window.TrafficCop({
-        id: 'experiment-page-3-customcallback',
         customCallback: handleVariation,
         variations: variants
     });

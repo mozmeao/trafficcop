@@ -1,7 +1,6 @@
 {% extends "../index.njk" %}
 
 {% block experiment_js %}
-    <script src="/libs/index.js"></script>
     <script src="/trafficcop/index.js"></script>
     <script src="/experiment-page1.js"></script>
 {% endblock %}
@@ -18,37 +17,37 @@
             {% if not variation %}
                 <span>🐠</span>
                 <figcaption class="little-text">
-                    tropical fish
+                    tropical fish (no variation)
                 </figcaption>
             {% elif variation == '1' %}
                 <span>🐡</span>
                 <figcaption class="little-text">
-                    blowfish
+                    blowfish (1)
                 </figcaption>
             {% elif variation == '2' %}
                 <span>🐳</span>
                 <figcaption class="little-text">
-                    cute whale
+                    cute whale (2)
                 </figcaption>
             {% elif variation == '3' %}
                 <span>🐋</span>
                 <figcaption class="little-text">
-                    humpback whale
+                    humpback whale (3)
                 </figcaption>
             {% elif variation == '4' %}
                 <span>🦀</span>
                 <figcaption class="little-text">
-                    crab
+                    crab (4)
                 </figcaption>
             {% elif variation == '5' %}
                 <span>🐙</span>
                 <figcaption class="little-text">
-                    octopus
+                    octopus (5)
                 </figcaption>
             {% elif variation == '6' %}
                 <span>🦑</span>
                 <figcaption class="little-text">
-                    elusive squid
+                    elusive squid (6)
                 </figcaption>
             {% endif %}
             </figure>
@@ -62,12 +61,5 @@
                 this line. If yes, do. I love you all.
             </p>
         </article>
-
-
-        {% include "./_experiment-details.njk" %}
     </div>
-{% endblock %}
-
-{% block page_js %}
-    <script src="/experiment-details.js"></script>
 {% endblock %}

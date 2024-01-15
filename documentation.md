@@ -2,14 +2,13 @@
 
 Traffic Cop places visitors into A/B/x cohorts, and either performs a redirect or executes a developer-specified JavaScript function.
 
-**Note that Traffic Cop supports percentages into the hundredths, but no smaller.**
-
 ## How it works
 
-After verifying the supplied configuration, Traffic Cop chooses a variation for the visitor in one of two ways:
+After verifying the supplied configuration, Traffic Cop then generates a random number to choose a variation based on the supplied cohort percentages. If the supplied variations do not target 100% of visitors, the `no-variation` value may be chosen.
 
-1. Checks the visitor's cookies to see if they were previously given a variation. If so, that same variation is used.
-2. If no previous variation exists, Traffic Cop generates a random number to choose a variation. If the supplied variations do not target 100% of visitors, the `novariation` value may be chosen. The chosen variation is written to a cookie for subsequent visits.
+Traffic Cop does not use cookies to record or store data of any kind. It also does not store, send or transmit any kind of experiment data for analysis. It simply performs the task of displaying different experiment variations upon page load. It is up to you to record experiment data using whatever your standard website analytics tools may be.
+
+**Note that because Traffic Cop does not use cookies, this does mean that repeat visits to the canonical URL might see a different variation to the one they saw previously during the course of an experiment running.**
 
 ## Type A: Callback
 
@@ -27,7 +26,6 @@ function myCallback(variation) {
 }
 
 var lou = new TrafficCop({
-  id: ‘experiment-button-color’,
   customCallback: myCallback,
   variations: {
     ‘a’: 10.25,
@@ -42,11 +40,11 @@ lou.init();
 
 ## Type B: Redirect
 
-If the instance of Traffic Cop is _not_ provided a `customCallback`, and if the chosen variation is _not_ `novariation`, the visitor is redirected to the current URL with the chosen variation appended to the querystring.
+If the instance of Traffic Cop is _not_ provided a `customCallback`, and if the chosen variation is _not_ `no-variation`, the visitor is redirected to the current URL with the chosen variation appended to the query string.
 
 Any further functionality is handled by the application. (Usually loading different HTML/JS/CSS based on the query parameter.)
 
-If the chosen variation is `novariation`, no redirect will occur - i.e. the user is not chosen to participate in the experiment.
+If the chosen variation is `no-variation`, no redirect will occur - i.e. the user is not chosen to participate in the experiment.
 
 Any query string parameters present when a user initially lands on a page will be propagated to the variation redirect.
 
@@ -55,7 +53,6 @@ Any query string parameters present when a user initially lands on a page will b
 ```javascript
 // example configuration for a redirect experiment
 var wiggum = new TrafficCop({
-  id: ‘experiment-promo-fall-2017’,
   variations: {
     ‘v=1’: 0.15,
     ‘v=2’: 30,
@@ -66,14 +63,14 @@ var wiggum = new TrafficCop({
 wiggum.init();
 ```
 
-**Note that the `variations` for redirect experiments contain a `key=value` pair.** This is not required, but does result in nicer redirect URLs, e.g. `https://www.toohot.today/?v=2` instead of `https://www.toohot.today/?2`.
+**Note that the `variations` for redirect experiments contain a `key=value` pair.** This is not required, but does result in nicer redirect URLs, e.g. `https://www.example.com/?v=2` instead of `https://www.example.com/?2`.
 
 ### Advanced: Type B + Type A
 
 It is possible to have both types of experiments running on the same page for the same audience. The general setup would be:
 
 1. Place the redirect experiment in the `<head>` of the page. This will take precedence.
-2. Place the callback experiment at the end of the page. This will execute regardless of querystring values.
+2. Place the callback experiment at the end of the page. This will execute regardless of query string values.
 
 Check out the demo for a live example of this setup.
 
@@ -83,7 +80,6 @@ Variations are sorted in the order provided, and percentages are tallied to crea
 
 ```javascript
 var rex = new TrafficCop({
-    id: 'experiment-new-headline',
     variations: {
         'v=a': 15,
         'v=b': 0.25,
@@ -101,18 +97,18 @@ The implied tiers would be:
 
 If the random number generated was 12.6, the user would be redirected to `?v=a`. A value of 15.2 would send the user `?v=b`, 15.6 to `?v=c`, and anything above 40.31 would result in no redirect.
 
+**Note that Traffic Cop supports percentages into the hundredths, but no smaller.**
+
 ## Configuration
 
-Each instance of a Traffic Cop requires at least two pieces of configuration:
+Each instance of a Traffic Cop requires one main configuration property:
 
--   A string ID that is unique to other currently running tests (to avoid confusion when reading cookies)
 -   A variations object that lists all variations along with the associated percent chance of being chosen
 
 An implementation for a redirect experiment might look like:
 
 ```javascript
 var eddie = new TrafficCop({
-    id: 'experiment-new-headline',
     variations: {
         'v=1': 12.2,
         'v=2': 0.13,
@@ -123,89 +119,25 @@ var eddie = new TrafficCop({
 eddie.init();
 ```
 
-In the above example, the string _experiment-new-headline_ will be used as the cookie name to store the chosen variation.
-
-The test will have 3 variations and will target a total of 23.78% of visitors. There will also be a 76.22% chance that `novariation` is chosen.
-
-### Optional Configuration
-
-#### Customizing how long a user sees the same variation
-
-To specify how long the cookie associated with a visitor for an individual experiment will last, specify a `cookieExpires` value in the configuration. This value must be a `Number` and represents the number of hours the cookie will last. If omitted, the cookie will last for 24 hours. A value of 0 will result in a session-length cookie.
-
-An implementation with `cookieExpires` set might look like the following:
-
-```javascript
-var lou = new TrafficCop({
-    id: 'experiment-homepage-spring-2017',
-    customCallback: someCallbackFunction,
-    cookieExpires: 0, // lasts until user closes the window/tab
-    variations: {
-        a: 25,
-        b: 25,
-        c: 25
-    }
-});
-
-lou.init();
-```
-
-#### Maintaining referral sources
-
-One obstacle with client-side redirects is that the original referrer gets lost, which makes it difficult to know where your traffic is coming from. To remedy this, Traffic Cop by default sets a cookie just prior to redirecting the visitor that holds the original value of `document.referer`. This cookie is named _mozilla-traffic-cop-original-referrer_ and contains the value of `document.referer`, or _direct_ if `document.referer` is empty.
-
-If you don't need this cookie, simply pass `setReferrerCookie: false` in your configuration. By default, this cookie will be set.
-
-This cookie uses the same `cookieExpires` value as described above.
-
-**Note** Traffic Cop does nothing with this cookie. If required for your implementation, you'll need to check for this cookie on your variation pages and send it on to your analytics platform (or wherever you might need it).
-
-At Mozilla, we use Google Tag Manager, and send this cookie information via a `dataLayer` push prior to the GTM script being loaded.
-
-**If you are using this cookie, we recommend explicitly removing it after use!**
-
-```javascript
-//
-var referrer = Mozilla.Cookies.getItem('mozilla-traffic-cop-original-referrer');
-// some code to send 'referrer' on to analytics goes here...
-//
-
-// now clear the cookie so we don't accidentally read it again
-Mozilla.Cookies.removeItem('mozilla-traffic-cop-original-referrer');
-```
+In the above example, the test will have 3 variations and will target a total of 23.78% of visitors. There will also be a 76.22% chance that `no-variation` is chosen.
 
 ## Implementation
 
-Traffic Cop requires three JavaScript files:
+Traffic Cop requires two JavaScript files:
 
-1. `@mozmeao/cookie-helper` (install via [NPM](https://www.npmjs.com/package/@mozmeao/cookie-helper))
-2. `@mozmeao/trafficcop` (install via [NPM](https://www.npmjs.com/package/@mozmeao/trafficcop))
-3. A custom `.js` file to configure and initialize an instance of Traffic Cop (and perhaps contain a callback function)
+1. `@mozmeao/trafficcop` (install via [NPM](https://www.npmjs.com/package/@mozmeao/trafficcop))
+2. A custom `.js` file to configure and initialize an instance of Traffic Cop (and perhaps contain a callback function).
 
-Note that Traffic Cop expects a cookie helper library to be available via a specific global variable in order to work. You can instantiate the cookie helper like so:
+You can import the NPM package directly into your custom `.js` file to bundle everything together, using `require` or `import`:
 
-```javascript
-const CookieHelper = require('@mozmeao/cookie-helper');
-
-// create namespace
-if (typeof window.Mozilla === 'undefined') {
-    window.Mozilla = {};
-}
-
-window.Mozilla.Cookies = CookieHelper;
-```
-
-If you ensure the above code is included before Traffic Cop is run, then everything should work correctly.
+-   `import TrafficCop from '@mozmeao/trafficcop';`
+-   `const TrafficCop = require('@mozmeao/trafficcop');`
 
 ### Considerations
 
-1. To prevent search engines from indexing a variation URL, we recommend adding a `<link rel="canonical">` to the `<head>` of your experiment pages that points to the URL without any variation parameters. For example, all variations for `www.toohot.today/product` should have the following tag:
+1. To prevent search engines from indexing a variation URL, we recommend adding a `<link rel="canonical">` to the `<head>` of your experiment pages that points to the URL without any variation parameters. For example, all variations for `www.example.com/product` should have the following tag:
 
-    `<link rel="canonical" href="http://www.toohot.today/product">`
+    `<link rel="canonical" href="http://www.example.com/product">`
 
 2. Concatenate and minify experiment-specific files before sending to production. This will reduce your file size by about **70%**!
-3. Respect your visitors' privacy settings and check their _doNotTrack_<sup>[1](#trafficcop-footnote1)</sup> status before putting them in an experiment.
-
-<br><br>
-
-<a name="trafficcop-footnote1"><sup>1</sup></a> - Perhaps you looked at the source and saw Traffic Cop looks for a function by the name of `Mozilla.dntEnabled`. Traffic Cop carries on just fine if this function doesn’t exist, but, should you wish to respect this setting, simply include the `mozilla-dnt-helper.js` code (it's in the `src` directory).
+3. Make sure your visitors consent to analytics before recording experiment data.
