@@ -47,9 +47,9 @@ In contrast to third-party options (e.g. [Optimizely](https://www.optimizely.com
 
 A visitor hits a URL running an experiment (meaning the appropriate JS is loaded). Traffic Cop picks a random number, and, if that random number falls within the range specified by a variation (see below), either redirects the visitor to that variation or executes an arbitrary, developer-specified callback function.
 
-For redirects, Traffic Cop assumes all variations are loaded through a query string parameter appended to the original URL. This keeps things simple, as no new URL patterns need to be defined (and later removed) for each experiment. Simply check for the query string parameter (wherever your application might do that sort of thing) and load different content accordingly.
+For redirects, Traffic Cop assumes all variations are loaded through a query string parameter appended to the original URL. This keeps things simple, as no new URL patterns need to be defined (and later removed) for each experiment. First, check for the query string parameter (wherever your application might do that sort of thing) and then load different content accordingly.
 
-The configuration file is fairly straightforward. Simply instantiate a new Traffic Cop with your experiment configuration, and then initialize it.
+The configuration file has two steps. Instantiate a new Traffic Cop with your experiment configuration, and then initialize it.
 
 ```javascript
 // example configuration for a redirect experiment

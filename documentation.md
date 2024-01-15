@@ -125,8 +125,8 @@ In the above example, the test will have 3 variations and will target a total of
 
 Traffic Cop requires two JavaScript files:
 
-2. `@mozmeao/trafficcop` (install via [NPM](https://www.npmjs.com/package/@mozmeao/trafficcop))
-3. A custom `.js` file to configure and initialize an instance of Traffic Cop (and perhaps contain a callback function).
+1. `@mozmeao/trafficcop` (install via [NPM](https://www.npmjs.com/package/@mozmeao/trafficcop))
+2. A custom `.js` file to configure and initialize an instance of Traffic Cop (and perhaps contain a callback function).
 
 You can import the NPM package directly into your custom `.js` file to bundle everything together, using `require` or `import`:
 
