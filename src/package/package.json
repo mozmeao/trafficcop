@@ -1,6 +1,6 @@
 {
     "name": "@mozmeao/trafficcop",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "description": "A/B testing framework from the fine folks working on mozilla.org",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

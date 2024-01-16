@@ -1,6 +1,6 @@
 {
     "name": "@mozmeao/trafficcop",
-    "version": "2.0.1",
+    "version": "3.0.0",
     "private": true,
     "description": "A/B testing framework from the fine folks working on mozilla.org",
     "homepage": "https://github.com/mozmeao/trafficcop",
