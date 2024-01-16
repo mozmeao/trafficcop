@@ -1,4 +1,4 @@
-# HEAD
+# 3.0.0
 
 -   **js:** Remove use of cookies (#56).
 -   **js:** Migrate ESLint to use new flat config (#42).
