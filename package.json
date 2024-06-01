@@ -34,7 +34,7 @@
         "doctoc": "^2.2.1",
         "eslint": "^9.1.1",
         "eslint-config-prettier": "^9.1.0",
-        "globals": "^15.1.0",
+        "globals": "^15.3.0",
         "jasmine-browser-runner": "^2.4.0",
         "jasmine-core": "^5.1.2",
         "prettier": "^3.2.5",
