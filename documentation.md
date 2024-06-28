@@ -6,9 +6,7 @@ Traffic Cop places visitors into A/B/x cohorts, and either performs a redirect o
 
 After verifying the supplied configuration, Traffic Cop then generates a random number to choose a variation based on the supplied cohort percentages. If the supplied variations do not target 100% of visitors, the `no-variation` value may be chosen.
 
-Traffic Cop does not use cookies to record or store data of any kind. It also does not store, send or transmit any kind of experiment data for analysis. It simply performs the task of displaying different experiment variations upon page load. It is up to you to record experiment data using whatever your standard website analytics tools may be.
-
-**Note that because Traffic Cop does not use cookies, this does mean that repeat visits to the canonical URL might see a different variation to the one they saw previously during the course of an experiment running.**
+Traffic Cop does not set cookies to record or store data of any kind. It also does not store, send or transmit any kind of experiment data for analysis. It simply performs the task of displaying different experiment variations upon page load. It is up to you to record experiment data using whatever your standard website analytics tools may be. Likewise, if you want to set a cookie on redirect to remember which variation a website visitor has seen, it is up to you to handle cookie consent appropriately before doing so.
 
 ## Type A: Callback
 
@@ -103,7 +101,7 @@ If the random number generated was 12.6, the user would be redirected to `?v=a`.
 
 Each instance of a Traffic Cop requires one main configuration property:
 
--   A variations object that lists all variations along with the associated percent chance of being chosen
+- A variations object that lists all variations along with the associated percent chance of being chosen
 
 An implementation for a redirect experiment might look like:
 
@@ -121,6 +119,29 @@ eddie.init();
 
 In the above example, the test will have 3 variations and will target a total of 23.78% of visitors. There will also be a 76.22% chance that `no-variation` is chosen.
 
+### Remembering which variation a visitor has seen previously.
+
+If you would like to try and ensure website visitors see the same experiment variation on repeat page visits, you can pass an optional experiment cookie ID to Traffic Cop when initializing an experiment:
+
+```javascript
+var eddie = new TrafficCop({
+    id: 'my-experiment-cookie-id',
+    variations: {
+        'v=1': 12.2,
+        'v=2': 0.13,
+        'v=3': 11.45
+    }
+});
+
+eddie.init();
+```
+
+Once Traffic Cop is initialized with an `id`, you can then set a cookie in your website code to store which variation was chosen. Traffic Cop will then check for existence of this cookie before deciding which variation to show on repeat visits.
+
+The cookie ID should match the value of `eddie.id`, and the cookie value should match the value of `eddie.chosenVariation`. If you need help setting cookies, see [https://github.com/mozmeao/cookie-helper](https://github.com/mozmeao/cookie-helper).
+
+Note: it is a website's responsibility to check for cookie consent before setting non-essential cookies!
+
 ## Implementation
 
 Traffic Cop requires two JavaScript files:
@@ -130,8 +151,8 @@ Traffic Cop requires two JavaScript files:
 
 You can import the NPM package directly into your custom `.js` file to bundle everything together, using `require` or `import`:
 
--   `import TrafficCop from '@mozmeao/trafficcop';`
--   `const TrafficCop = require('@mozmeao/trafficcop');`
+- `import TrafficCop from '@mozmeao/trafficcop';`
+- `const TrafficCop = require('@mozmeao/trafficcop');`
 
 ### Considerations
 

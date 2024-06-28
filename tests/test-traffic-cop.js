@@ -6,6 +6,7 @@
 /* global sinon */
 
 import TrafficCop from '../dist/index';
+import CookieHelper from '@mozmeao/cookie-helper';
 
 describe('mozilla-traffic-cop.js', function () {
     'use strict';
@@ -200,7 +201,7 @@ describe('mozilla-traffic-cop.js', function () {
         });
     });
 
-    describe('TrafficCop.chooseVariation', function () {
+    describe('TrafficCop.chooseVariation (no cookie)', function () {
         const cop = new TrafficCop({
             variations: {
                 'v=3': 30,
@@ -211,11 +212,19 @@ describe('mozilla-traffic-cop.js', function () {
             }
         });
 
+        beforeEach(function () {
+            spyOn(TrafficCop, 'getCookie').and.returnValue(null);
+        });
+
         it('should return noVariationValue if random number is greater than total percentages', function () {
             // random number >= 80 is greater than percentage total above (75.55)
             spyOn(window.Math, 'random').and.returnValue(0.7556);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual(TrafficCop.noVariationValue);
         });
 
@@ -223,7 +232,11 @@ describe('mozilla-traffic-cop.js', function () {
             // first variation is 30%, so 1-30
             spyOn(window.Math, 'random').and.returnValue(0.01);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=3');
         });
 
@@ -231,7 +244,11 @@ describe('mozilla-traffic-cop.js', function () {
             // first variation is 30%, so 1-30
             spyOn(window.Math, 'random').and.returnValue(0.29);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=3');
         });
 
@@ -239,7 +256,11 @@ describe('mozilla-traffic-cop.js', function () {
             // second variation is 20%, so 31-50
             spyOn(window.Math, 'random').and.returnValue(0.3);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=1');
         });
 
@@ -247,7 +268,11 @@ describe('mozilla-traffic-cop.js', function () {
             // second variation is 20%, so 31-50
             spyOn(window.Math, 'random').and.returnValue(0.49);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=1');
         });
 
@@ -255,7 +280,11 @@ describe('mozilla-traffic-cop.js', function () {
             // third variation is 25.25%, so 51-75.25
             spyOn(window.Math, 'random').and.returnValue(0.5);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=2');
         });
 
@@ -263,7 +292,11 @@ describe('mozilla-traffic-cop.js', function () {
             // third variation is 25.25%, so 51-75.25
             spyOn(window.Math, 'random').and.returnValue(0.7525);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=2');
         });
 
@@ -271,7 +304,11 @@ describe('mozilla-traffic-cop.js', function () {
             // fourth variation is 0.2%, so 75.26-75.45
             spyOn(window.Math, 'random').and.returnValue(0.7526);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=4');
         });
 
@@ -279,7 +316,11 @@ describe('mozilla-traffic-cop.js', function () {
             // fourth variation is 0.2%, so 75.26-75.45
             spyOn(window.Math, 'random').and.returnValue(0.7545);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=4');
         });
 
@@ -287,8 +328,74 @@ describe('mozilla-traffic-cop.js', function () {
             // fifth variation is 0.1%, so 75.46
             spyOn(window.Math, 'random').and.returnValue(0.7546);
             expect(
-                TrafficCop.chooseVariation(cop.variations, cop.totalPercentage)
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
             ).toEqual('v=5');
+        });
+    });
+
+    describe('TrafficCop.chooseVariation (cookie)', function () {
+        const cop = new TrafficCop({
+            id: 'my-experiment-cookie-id',
+            variations: {
+                'v=1': 20,
+                'v=2': 25.25,
+                'v=3': 30
+            }
+        });
+
+        it('should return previously seen variation if an experiment cookie exists', function () {
+            spyOn(TrafficCop, 'getCookie').and.returnValue('v=3');
+            expect(
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
+            ).toEqual('v=3');
+        });
+
+        it('should return no-variation if an experiment cookie exists', function () {
+            spyOn(TrafficCop, 'getCookie').and.returnValue(
+                TrafficCop.noVariationValue
+            );
+            expect(
+                TrafficCop.chooseVariation(
+                    cop.id,
+                    cop.variations,
+                    cop.totalPercentage
+                )
+            ).toEqual(TrafficCop.noVariationValue);
+        });
+    });
+
+    describe('TrafficCop.getCookie', function () {
+        const cookieId = 'test-cookie';
+        var date = new Date();
+        date.setHours(date.getHours() + 48);
+
+        beforeEach(function () {
+            document.cookie = ''; // clear cookies
+            CookieHelper.setItem(cookieId, 'test', date, '/');
+        });
+
+        afterEach(function () {
+            document.cookie = ''; // clear cookies
+        });
+
+        it('should return the value of the cookie that is passed to the getItem method', function () {
+            expect(TrafficCop.getCookie(cookieId)).toBe('test');
+        });
+
+        it('should return null if no cookie with that name is found', function () {
+            expect(TrafficCop.getCookie('oatmeal-raisin')).toBeNull();
+        });
+
+        it('should return null if no id is passed', function () {
+            expect(TrafficCop.getCookie()).toBeNull();
         });
     });
 

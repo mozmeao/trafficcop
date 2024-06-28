@@ -9,6 +9,7 @@
     "author": "Mozilla",
     "license": "MPL-2.0",
     "dependencies": {
+        "@mozmeao/cookie-helper": "^1.1.0",
         "express": "^4.21.2",
         "nunjucks": "^3.2.4",
         "path": "^0.12.7",
