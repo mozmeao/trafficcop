@@ -8,6 +8,7 @@
  * Example usage:
  *
  * const cop = new TrafficCop({
+ *     id: 'my-experiment-cookie-id',
  *     variations: {
  *         'v=1': 25,
  *         'v=2': 25,
@@ -19,6 +20,8 @@
  *
  *
  * @param Object config: Object literal containing the following:
+ *      [String] id (optional): Unique string ID for cookie identification.
+ *          Only needs to be unique to other currently running tests.
  *      [Function] customCallback (optional): Arbitrary function to run when
  *          a variation (or lack thereof) is chosen. This function will be
  *          passed the variation value (if chosen), or the value of
@@ -38,6 +41,9 @@ const TrafficCop = function (config) {
 
     // make sure config is an object
     this.config = typeof config === 'object' ? config : {};
+
+    // store cookie id
+    this.id = this.config.id;
 
     // store variations
     this.variations = this.config.variations;
@@ -81,6 +87,7 @@ TrafficCop.prototype.init = function () {
     if (this.verifyConfig()) {
         // determine which (if any) variation to choose for this user/experiment
         this.chosenVariation = TrafficCop.chooseVariation(
+            this.id,
             this.variations,
             this.totalPercentage
         );
@@ -158,33 +165,81 @@ TrafficCop.isRedirectVariation = function (variations, queryString) {
     return isVariation;
 };
 
+/**
+ * Get the cookie value for a given ID.
+ * Hat tip to https://github.com/mozmeao/cookie-helper
+ * @param {String} cookie id
+ * @returns {String|null} cookie value
+ */
+TrafficCop.getCookie = function (id) {
+    if (typeof id !== 'string') {
+        return null;
+    }
+
+    try {
+        return (
+            decodeURIComponent(
+                document.cookie.replace(
+                    new RegExp(
+                        '(?:(?:^|.*;)\\s*' +
+                            encodeURIComponent(id).replace(/[-.+*]/g, '\\$&') +
+                            '\\s*\\=\\s*([^;]*).*$)|^.*$'
+                    ),
+                    '$1'
+                )
+            ) || null
+        );
+    } catch (e) {
+        return null;
+    }
+};
+
+TrafficCop.hasVariationCookie = function (id, variations) {
+    const cookie = TrafficCop.getCookie(id);
+
+    if (
+        cookie &&
+        (variations[cookie] || cookie === TrafficCop.noVariationValue)
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 /*
  * Returns the variation chosen for the current user/experiment.
  */
-TrafficCop.chooseVariation = function (variations, totalPercentage) {
+TrafficCop.chooseVariation = function (id, variations, totalPercentage) {
     let random;
     let runningTotal;
     let choice = TrafficCop.noVariationValue;
 
-    // conjure a random float between 1 and 100 (inclusive)
-    random = Math.floor(Math.random() * 10000) + 1;
-    random = random / 100;
+    // check to see if user has a cookie from a previously visited variation
+    // also make sure variation in cookie is still valid (you never know)
+    if (TrafficCop.hasVariationCookie(id, variations)) {
+        choice = TrafficCop.getCookie(id);
+    } else {
+        // conjure a random float between 1 and 100 (inclusive)
+        random = Math.floor(Math.random() * 10000) + 1;
+        random = random / 100;
 
-    // make sure random number falls in the distribution range
-    if (random <= totalPercentage) {
-        runningTotal = 0;
+        // make sure random number falls in the distribution range
+        if (random <= totalPercentage) {
+            runningTotal = 0;
 
-        // loop through all variations
-        for (const v in variations) {
-            // check if random number falls within current variation range
-            if (random <= variations[v] + runningTotal) {
-                // if so, we have found our variation
-                choice = v;
-                break;
+            // loop through all variations
+            for (const v in variations) {
+                // check if random number falls within current variation range
+                if (random <= variations[v] + runningTotal) {
+                    // if so, we have found our variation
+                    choice = v;
+                    break;
+                }
+
+                // tally variation percentages for the next loop iteration
+                runningTotal += variations[v];
             }
-
-            // tally variation percentages for the next loop iteration
-            runningTotal += variations[v];
         }
     }
 
