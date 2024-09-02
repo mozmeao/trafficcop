@@ -1,3 +1,7 @@
+# HEAD
+
+-   **js:** Add optional check for experiment cookie to persist previously seen variations (#93).
+
 # 3.0.0
 
 -   **js:** Remove use of cookies (#56).

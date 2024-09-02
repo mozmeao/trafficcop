@@ -1,6 +1,7 @@
 {% extends "../index.njk" %}
 
 {% block experiment_js %}
+    <script src="/libs/index.js"></script>
     <script src="/trafficcop/index.js"></script>
     <script src="/experiment-page3-redirect.js"></script>
 {% endblock %}
@@ -45,6 +46,10 @@
                 <span class="hidden" id="var-b">Herman Blume (customCallback b)</span>
             </p>
         </article>
+
+        <aside>
+            <p>Note: to clear the variation, you might need to clear cookies for this page and refresh.</p>
+        </aside>
     </div>
 {% endblock %}
 
