@@ -9,7 +9,35 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 10
+    groups:
+      frontend:
+        dependency-type: production
+        update-types:
+          - "minor"
+          - "patch"
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - dependencies
   - package-ecosystem: "npm"
     directory: "/demo"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 10
+    groups:
+      frontend:
+        dependency-type: production
+        update-types:
+          - "minor"
+          - "patch"
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - dependencies
