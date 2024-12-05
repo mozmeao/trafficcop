@@ -9,7 +9,7 @@
     "author": "Mozilla",
     "license": "MPL-2.0",
     "dependencies": {
-        "express": "^4.21.1",
+        "express": "^4.21.2",
         "nunjucks": "^3.2.4",
         "path": "^0.12.7",
         "serve-favicon": "^2.3.2"
