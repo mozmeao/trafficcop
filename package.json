@@ -33,7 +33,7 @@
         "copy-webpack-plugin": "^12.0.2",
         "doctoc": "^2.2.1",
         "eslint": "^9.19.0",
-        "eslint-config-prettier": "^9.1.0",
+        "eslint-config-prettier": "^10.0.1",
         "globals": "^15.14.0",
         "jasmine-browser-runner": "^2.5.0",
         "jasmine-core": "^5.5.0",
