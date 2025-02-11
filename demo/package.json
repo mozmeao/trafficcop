@@ -4,17 +4,21 @@
     "description": "Express app demonstrating usage of Traffic Cop.",
     "main": "index.js",
     "scripts": {
+        "prestart": "webpack --mode development --config webpack.config.js",
         "start": "nodemon src/index.js"
     },
     "author": "Mozilla",
     "license": "MPL-2.0",
     "dependencies": {
+        "@mozmeao/cookie-helper": "^1.1.0",
         "express": "^4.21.2",
         "nunjucks": "^3.2.4",
         "path": "^0.12.7",
         "serve-favicon": "^2.3.2"
     },
     "devDependencies": {
-        "nodemon": "^3.1.9"
+        "nodemon": "^3.1.9",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1"
     }
 }

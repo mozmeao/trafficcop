@@ -1,6 +1,7 @@
 {% extends "../index.njk" %}
 
 {% block experiment_js %}
+    <script src="/libs/index.js"></script>
     <script src="/trafficcop/index.js"></script>
     <script src="/experiment-page1.js"></script>
 {% endblock %}
@@ -61,5 +62,9 @@
                 this line. If yes, do. I love you all.
             </p>
         </article>
+
+        <aside>
+            <p>Note: to clear the variation, you might need to clear cookies for this page and refresh.</p>
+        </aside>
     </div>
 {% endblock %}

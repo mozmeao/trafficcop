@@ -10,9 +10,9 @@ Install via npm: `npm install @mozmeao/trafficcop`
 
 Import the library at your applications entrypoint via require, import or by using a global variable in your script tag:
 
--   `import TrafficCop from '@mozmeao/trafficcop';`
--   `const TrafficCop = require('@mozmeao/trafficcop');`
--   `const TrafficCop = window.TrafficCop;`
+- `import TrafficCop from '@mozmeao/trafficcop';`
+- `const TrafficCop = require('@mozmeao/trafficcop');`
+- `const TrafficCop = window.TrafficCop;`
 
 ### What does it do?
 
@@ -38,7 +38,7 @@ Most of the content experiments on [mozilla.org](https://www.mozilla.org) simply
 In contrast to third-party options (e.g. [Optimizely](https://www.optimizely.com/)), Traffic Cop offers:
 
 1. **Security** — Many third-party options require loading JS from their site, which is a potential [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) vector. Traffic Cop can (and should) be served from your site/CDN.
-2. **Privacy** - Traffic Cop does not use cookies of any kind (unlike most third-party solutions), nor does it store or send any experiment data itself (that part is up to you and your consent management solution).
+2. **Privacy** - Traffic Cop does not set cookies of any kind (unlike most third-party solutions), nor does it store or send any experiment data itself (that part is up to you and your consent management solution).
 3. **Performance** — Traffic Cop is light and has zero dependencies, resulting in less than 2KB of JS when minified. (In our experience, Optimizely's JS bundle was regularly above 200KB.)
 4. **Your workflow** — Traffic Cop offers great flexibility in when and how you write and load variation code. No need to type jQuery in a text box on a third-party web page.
 5. **Savings** — No need to pay for a third-party service.
@@ -93,9 +93,9 @@ Check out [the docs](./documentation.md) for more complete information.
 
 ## Further Documentation
 
--   [Building the NPM package](docs/#building-the-npm-package)
--   [Running tests](docs/#running-tests)
--   [Publishing to NPM](docs/#publishing-to-npm)
+- [Building the NPM package](docs/#building-the-npm-package)
+- [Running tests](docs/#running-tests)
+- [Publishing to NPM](docs/#publishing-to-npm)
 
 ## License
 

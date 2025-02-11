@@ -3,9 +3,9 @@
 
 ### Contents
 
--   [Building the NPM package](#building-the-npm-package)
--   [Running tests](#running-tests)
--   [Publishing to NPM](#publishing-to-npm)
+- [Building the NPM package](#building-the-npm-package)
+- [Running tests](#running-tests)
+- [Publishing to NPM](#publishing-to-npm)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
