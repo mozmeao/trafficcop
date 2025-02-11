@@ -4,6 +4,7 @@
     "description": "Express app demonstrating usage of Traffic Cop.",
     "main": "index.js",
     "scripts": {
+        "prestart": "webpack --mode development --config webpack.config.js",
         "start": "nodemon src/index.js"
     },
     "author": "Mozilla",
@@ -16,6 +17,8 @@
         "serve-favicon": "^2.3.2"
     },
     "devDependencies": {
-        "nodemon": "^3.1.9"
+        "nodemon": "^3.1.9",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1"
     }
 }
