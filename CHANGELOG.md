@@ -1,4 +1,4 @@
-# HEAD
+# 3.1.0
 
 - **js:** Add optional check for experiment cookie to persist previously seen variations (#93).
 
