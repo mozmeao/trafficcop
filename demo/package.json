@@ -11,10 +11,10 @@
     "license": "MPL-2.0",
     "dependencies": {
         "@mozmeao/cookie-helper": "^1.1.0",
-        "express": "^5.1.0",
+        "express": "^5.2.1",
         "nunjucks": "^3.2.4",
         "path": "^0.12.7",
-        "serve-favicon": "^2.3.2"
+        "serve-favicon": "^2.5.1"
     },
     "devDependencies": {
         "nodemon": "^3.1.10",
